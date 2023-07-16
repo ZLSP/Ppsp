@@ -1,4 +1,4 @@
-package com.zlsp.ppsphb.data.main
+package com.zlsp.ppsphb.data.repository.main
 
 import com.zlsp.ppsphb.ui.theme.models.TypographySize
 

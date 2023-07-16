@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 data class PaletteColor(
     val background: Color,
     val onBackground: Color,
-    val secondary: Color
+    val secondary: Color,
 ) {
     companion object {
         private val Blue = Color(0xFF080c17)

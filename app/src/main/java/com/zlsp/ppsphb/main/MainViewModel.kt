@@ -1,7 +1,7 @@
 package com.zlsp.ppsphb.main
 
 import com.zlsp.ppsphb.base.BaseViewModel
-import com.zlsp.ppsphb.data.main.MainRepository
+import com.zlsp.ppsphb.data.repository.main.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.viewmodel.container

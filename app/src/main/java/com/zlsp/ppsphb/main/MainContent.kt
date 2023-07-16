@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.zlsp.ppsphb.R
 import com.zlsp.ppsphb.base.baseComposable
 import com.zlsp.ppsphb.domain.Screen
+import com.zlsp.ppsphb.ui.screens.police_act.PoliceActScreen
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActViewModel
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.Theme
@@ -57,7 +58,7 @@ fun MainContent(
                 route = Screen.POLICE_ACT.route,
                 getViewModel = { hiltViewModel<PoliceActViewModel>() }
             ) { state, sendEvent ->
-
+                PoliceActScreen(state, sendEvent)
             }
 
             baseComposable(

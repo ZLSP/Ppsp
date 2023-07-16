@@ -2,9 +2,9 @@ package com.zlsp.ppsphb.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.zlsp.ppsphb.data.main.MainRepositoryImpl
+import com.zlsp.ppsphb.data.repository.main.MainRepositoryImpl
 import com.zlsp.ppsphb.data.UserStorage
-import com.zlsp.ppsphb.data.main.MainRepository
+import com.zlsp.ppsphb.data.repository.main.MainRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

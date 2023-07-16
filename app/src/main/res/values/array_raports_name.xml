@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_raports_name">
+        <item>
+            Рапорт об АП
+        </item>
+        <item>
+            Рапорт свободный
+        </item>
+        <item>
+            Рапорт по заявкам 02
+        </item>
+        <item>
+            Объяснение по АП
+        </item>
+        <item>
+            Объяснение по УП
+        </item>
+        <item>
+            Протокол доставления в ОП
+        </item>
+        <item>
+            Изменения в ФЗ "О полиции" от 21.12.2021
+        </item>
+    </string-array>
+</resources>

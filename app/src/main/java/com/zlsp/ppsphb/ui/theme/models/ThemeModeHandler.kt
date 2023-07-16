@@ -11,11 +11,14 @@ class ThemeModeHandler(
     }
 
     fun updateTypographySize() {
-        val typographySize = when(typographySizeState.value) {
+        val typographySize = when (typographySizeState.value) {
             TypographySize.SMALL -> TypographySize.NORMAL
             TypographySize.NORMAL -> TypographySize.BIG
             TypographySize.BIG -> TypographySize.SMALL
         }
         typographySizeState.value = typographySize
     }
+
+    val isDarkMode: Boolean
+        get() = isDarkModeState.value
 }

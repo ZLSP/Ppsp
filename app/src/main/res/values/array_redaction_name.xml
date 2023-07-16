@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_redaction_name">
+        <item>
+            Статья 5
+        </item>
+        <item>
+            Статья 7
+        </item>
+        <item>
+            Статья 9
+        </item>
+        <item>
+            Статья 11
+        </item>
+        <item>
+            Статья 12
+        </item>
+        <item>
+            Статья 13
+        </item>
+        <item>
+            Статья 14
+        </item>
+        <item>
+            Статья 15
+        </item>
+        <item>
+            Статья 15.1
+        </item>
+        <item>
+            Статья 16
+        </item>
+        <item>
+            Статья 17
+        </item>
+        <item>
+            Статья 23
+        </item>
+        <item>
+            Статья 25
+        </item>
+        <item>
+            Статья 27
+        </item>
+        <item>
+            Статья 28
+        </item>
+        <item>
+            Статья 30
+        </item>
+        <item>
+            Статья 41
+        </item>
+    </string-array>
+</resources>

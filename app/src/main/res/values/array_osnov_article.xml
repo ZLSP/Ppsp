@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_osnov_article">
+        <item>
+            (п.2 ч.1 ст.13; п.2 ч.3 ст.28)
+        </item>
+        <item>
+            (п.16, п.18 ч.1 ст.13)
+        </item>
+        <item>
+            (п.16, п.20 ч.1 ст.13)
+        </item>
+        <item>
+            (п.1-4 ч.3 ст.15)
+        </item>
+        <item>
+            (п.1-8 ч.1 ст.15.1)
+        </item>
+        <item>
+            (п.19, п.33 ч.1 ст.13)
+        </item>
+        <item>
+            (п.13-15 ч.1 ст.13; п.1-13 ч.2 ст.14; п.4 ч.3 ст.28)
+        </item>
+        <item>
+            (п.1 ч.1 ст.13; п.1 ч.3 ст.28)
+        </item>
+        <item>
+            (п.7 ч.1 ст.13)
+        </item>
+        <item>
+            (п.37 ч.1 ст.13; п.3 ч.3 ст.28)
+        </item>
+    </string-array>
+</resources>
