@@ -1,4 +1,4 @@
-package com.zlsp.ppsphb.data
+package com.zlsp.ppsphb.data.utils
 
 import android.content.SharedPreferences
 import com.zlsp.ppsphb.ui.theme.models.TypographySize

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -10,7 +11,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.zlsp.ppsphb"
+        applicationId "com.zlsp.android.ppsphb"
         minSdk 26
         targetSdk 33
         versionCode 1
@@ -82,7 +83,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     //Yandex
-    implementation 'com.yandex.android:mobileads:5.9.0'
+    implementation 'com.yandex.android:mobileads:5.10.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.yandex.android:mobmetricalib:5.3.0'
 
@@ -93,4 +94,22 @@ dependencies {
 
     //Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
+    //Ktor
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-client-auth:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
 }
