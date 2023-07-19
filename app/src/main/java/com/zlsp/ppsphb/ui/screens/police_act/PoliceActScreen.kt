@@ -1,6 +1,5 @@
 package com.zlsp.ppsphb.ui.screens.police_act
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,18 +21,16 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.zlsp.ppsphb.R
+import com.zlsp.ppsphb.base.ContentState
+import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
+import com.zlsp.ppsphb.ui.general.ErrorLayout
+import com.zlsp.ppsphb.ui.general.LoadingLayout
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.LocalThemeMode
 import com.zlsp.ppsphb.ui.theme.Theme
@@ -42,28 +40,38 @@ fun PoliceActScreen(
     state: PoliceActScreenState,
     sendEvent: (PoliceActScreenEvent) -> Unit,
 ) {
-    InitListArticles { sendEvent(PoliceActScreenEvent.Init(it)) }
-    Row {
-        ListParts(state.activeArticle)
-        Divider(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp),
-            color = Theme.colors.secondary
-        )
-        ListArticle(
-            activeArticle = state.activeArticle,
-            listArticle = state.listArticles,
-            onClickItem = { sendEvent(PoliceActScreenEvent.OnClickArticle(it)) }
-        )
+    Box(Modifier.fillMaxSize()) {
+        Row {
+            ListParts(state.activeArticle)
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp),
+                color = Theme.colors.secondary
+            )
+            ListArticlesNumber(
+                activeArticle = state.activeArticle.id,
+                listArticle = state.listArticles,
+                onClickItem = { sendEvent(PoliceActScreenEvent.OnClickArticle(it)) }
+            )
+        }
+        when (state.contentState) {
+            is ContentState.Content -> {}
+            is ContentState.Error -> ErrorLayout(
+                title = state.contentState.text,
+                onClick = { sendEvent(PoliceActScreenEvent.Init) }
+            )
+
+            is ContentState.Loading -> LoadingLayout()
+        }
     }
 }
 
 @Composable
-private fun ListArticle(
-    activeArticle: PoliceActArticle?,
-    listArticle: List<PoliceActArticle>,
-    onClickItem: (PoliceActArticle) -> Unit
+private fun ListArticlesNumber(
+    activeArticle: Double,
+    listArticle: List<ActArticleResponse>,
+    onClickItem: (ActArticleResponse) -> Unit
 ) {
     val isDarkMode = LocalThemeMode.current.isDarkMode
     val modifier = if (isDarkMode) {
@@ -85,7 +93,7 @@ private fun ListArticle(
             items = listArticle,
             key = { it.id },
         ) {
-            val background = if (it == activeArticle) {
+            val background = if (it.id == activeArticle) {
                 Theme.colors.secondary
             } else {
                 Theme.colors.background
@@ -94,18 +102,14 @@ private fun ListArticle(
             Card(
                 modifier = modifier.clickable { onClickItem(it) },
                 backgroundColor = background,
-                contentColor = Theme.colors.onBackground,
                 elevation = elevation,
                 shape = RoundedCornerShape(6.dp),
             ) {
                 Box(Modifier.size(50.dp)) {
                     Text(
                         modifier = Modifier.align(Alignment.Center),
-                        text = it.nameItemAct,
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.W600
-                        )
+                        text = it.numArticle,
+                        style = Theme.typography.numArticle
                     )
                 }
             }
@@ -115,7 +119,7 @@ private fun ListArticle(
 }
 
 @Composable
-private fun RowScope.ListParts(article: PoliceActArticle?) {
+private fun RowScope.ListParts(article: ActArticleResponse) {
     val isDarkMode = LocalThemeMode.current.isDarkMode
     val modifier = if (isDarkMode) {
         Modifier.shadow(
@@ -136,17 +140,13 @@ private fun RowScope.ListParts(article: PoliceActArticle?) {
         item {
             Spacer(Modifier.height(20.dp))
             Text(
-                text = article?.titleAct ?: "",
-                style = TextStyle(
-                    color = Theme.colors.onBackground,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.W600
-                )
+                text = article.titleArticle,
+                style = Theme.typography.titleArticle
             )
             Spacer(Modifier.height(10.dp))
         }
         items(
-            items = article?.listParts ?: emptyList()
+            items = article.listParts
         ) {
             Spacer(Modifier.height(10.dp))
             Card(
@@ -162,13 +162,30 @@ private fun RowScope.ListParts(article: PoliceActArticle?) {
                         .padding(10.dp)
                 ) {
                     Text(
-                        text = it,
-                        style = TextStyle(
-                            color = Theme.colors.onBackground,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W400
-                        )
+                        text = it.partText,
+                        style = Theme.typography.titlePart
                     )
+                    it.points?.forEach { point ->
+                        Spacer(Modifier.height(5.dp))
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            backgroundColor = Theme.colors.onBackground.copy(0.1f),
+                            shape = RoundedCornerShape(12.dp),
+                            elevation = 0.dp,
+                            contentColor = Theme.colors.onBackground
+                        ) {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
+                            ) {
+                                Text(
+                                    text = point,
+                                    style = Theme.typography.textBody
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -177,80 +194,10 @@ private fun RowScope.ListParts(article: PoliceActArticle?) {
 }
 
 @Composable
-private fun InitListArticles(
-    context: Context = LocalContext.current,
-    onInit: (List<PoliceActArticle>) -> Unit,
-) {
-    LaunchedEffect(true) {
-        onInit(getListActs(context))
-    }
-}
-
-private fun getListActs(context: Context): List<PoliceActArticle> {
-    val act1 = context.resources.getStringArray(R.array.array_act_1).mapToPoliceAct()
-    val act2 = context.resources.getStringArray(R.array.array_act_2).mapToPoliceAct()
-    val act3 = context.resources.getStringArray(R.array.array_act_3).mapToPoliceAct()
-    val act4 = context.resources.getStringArray(R.array.array_act_4).mapToPoliceAct()
-    val act5 = context.resources.getStringArray(R.array.array_act_5).mapToPoliceAct()
-    val act6 = context.resources.getStringArray(R.array.array_act_6).mapToPoliceAct()
-    val act7 = context.resources.getStringArray(R.array.array_act_7).mapToPoliceAct()
-    val act8 = context.resources.getStringArray(R.array.array_act_8).mapToPoliceAct()
-    val act9 = context.resources.getStringArray(R.array.array_act_9).mapToPoliceAct()
-    val act10 = context.resources.getStringArray(R.array.array_act_10).mapToPoliceAct()
-    val act11 = context.resources.getStringArray(R.array.array_act_11).mapToPoliceAct()
-    val act12 = context.resources.getStringArray(R.array.array_act_12).mapToPoliceAct()
-    val act13 = context.resources.getStringArray(R.array.array_act_13).mapToPoliceAct()
-    val act14 = context.resources.getStringArray(R.array.array_act_14).mapToPoliceAct()
-    return listOf(
-        act1,
-        act2,
-        act3,
-        act4,
-        act5,
-        act6,
-        act7,
-        act8,
-        act9,
-        act10,
-        act11,
-        act12,
-        act13,
-        act14,
-    )
-}
-
-private fun Array<String>.mapToPoliceAct(): PoliceActArticle {
-    var id = 0.0
-    var name = ""
-    var title = ""
-    val listParts = mutableListOf<String>()
-    this.toList().forEachIndexed { index, s ->
-        when (index) {
-            0 -> title = s
-            this.lastIndex -> {
-                name = s
-                id = s.toDoubleOrNull() ?: 0.0
-            }
-
-            else -> listParts.add(s)
-        }
-    }
-    return PoliceActArticle(
-        id = id,
-        nameItemAct = name,
-        titleAct = title,
-        listParts = listParts,
-    )
-}
-
-@Composable
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 private fun PreviewLight() = AppTheme(false) {
     PoliceActScreen(
-        state = PoliceActScreenState(
-            listArticles = PoliceActArticle.getPreviewList(),
-            activeArticle = PoliceActArticle.getPreviewItem(1)
-        ),
+        state = PoliceActScreenState.getPreview(),
         sendEvent = {}
     )
 }
@@ -259,10 +206,7 @@ private fun PreviewLight() = AppTheme(false) {
 @Preview(showBackground = true, backgroundColor = 0xFF080c17)
 private fun PreviewDark() = AppTheme {
     PoliceActScreen(
-        state = PoliceActScreenState(
-            listArticles = PoliceActArticle.getPreviewList(),
-            activeArticle = PoliceActArticle.getPreviewItem(1)
-        ),
+        state = PoliceActScreenState.getPreview(),
         sendEvent = {}
     )
 }

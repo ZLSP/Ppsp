@@ -11,6 +11,7 @@ android {
     compileSdk 33
 
     defaultConfig {
+//        applicationId "com.zlsp.android.ppsphb"
         applicationId "com.zlsp.android.ppsphb"
         minSdk 26
         targetSdk 33

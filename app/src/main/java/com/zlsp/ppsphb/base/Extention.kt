@@ -18,7 +18,7 @@ fun PaletteColor.switch(): PaletteColor = this.copy(
 )
 
 @Composable
-private fun animateColor(targetColor: Color): Color {
+fun animateColor(targetColor: Color): Color {
     return animateColorAsState(targetColor, tween(durationMillis = 1000)).value
 }
 

@@ -2,7 +2,9 @@ package com.zlsp.ppsphb.ui.screens.police_act
 
 import androidx.lifecycle.viewModelScope
 import com.zlsp.ppsphb.base.BaseViewModel
+import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
+import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -16,39 +18,40 @@ import javax.inject.Inject
 class PoliceActViewModel @Inject constructor(private val policeActRepository: PoliceActRepository) :
     BaseViewModel<PoliceActScreenState, PoliceActScreenEffect, PoliceActScreenEvent>() {
     override val containerHost: Container<PoliceActScreenState, PoliceActScreenEffect> = container(
-        PoliceActScreenState(
-            emptyList(),
-            null,
-        )
+        PoliceActScreenState.getDefault()
     ) {
         init()
     }
 
     override fun sendEvent(event: PoliceActScreenEvent) {
         when (event) {
-            is PoliceActScreenEvent.Init -> init(event.listArticles)
             is PoliceActScreenEvent.OnClickArticle -> onClickArticle(event.article)
+            is PoliceActScreenEvent.Init -> init()
         }
     }
 
     private fun init() = intent {
+        reduce { state.copy(contentState = ContentState.Loading) }
         policeActRepository.getPoliceAct()
-            .onEach {
-                println(it)
+            .onEach { policeAct ->
+                val newState = if (policeAct == null) {
+                    state.copy(contentState = ContentState.Error("Что-то пошло не так!"))
+                } else {
+                    state.copy(
+                        contentState = ContentState.Content,
+                        dateRedaction = policeAct.dateRedaction,
+                        activeArticle = policeAct.listArticles.first(),
+                        titleAct = policeAct.title,
+                        listArticlesName = policeAct.listArticles.map { it.numArticle },
+                        listArticles = policeAct.listArticles
+                    )
+                }
+                reduce { newState }
             }
             .launchIn(viewModelScope)
     }
 
-    private fun onClickArticle(article: PoliceActArticle) = intent {
+    private fun onClickArticle(article: ActArticleResponse) = intent {
         reduce { state.copy(activeArticle = article) }
-    }
-
-    private fun init(policeActs: List<PoliceActArticle>) = intent {
-        reduce {
-            state.copy(
-                listArticles = policeActs,
-                activeArticle = policeActs.first()
-            )
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.zlsp.ppsphb.main
 
+import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.base.MVI
 import com.zlsp.ppsphb.ui.theme.models.TypographySize
 
@@ -11,6 +12,7 @@ sealed interface MainActivityEvent: MVI.Event {
 }
 
 data class MainActivityState(
+    override val contentState: ContentState = ContentState.Content,
     val isDarkMode: Boolean,
     val typoSize: TypographySize,
-): MVI.State
+): MVI.State()

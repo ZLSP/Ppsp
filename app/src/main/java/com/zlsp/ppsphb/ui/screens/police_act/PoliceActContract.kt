@@ -1,46 +1,57 @@
 package com.zlsp.ppsphb.ui.screens.police_act
 
+import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.base.MVI
+import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
+import com.zlsp.ppsphb.data.repository.police_act.models.PartArticleResponse
 
 data class PoliceActScreenState(
-    val listArticles: List<PoliceActArticle>,
-    val activeArticle: PoliceActArticle?
-): MVI.State
-
-sealed interface PoliceActScreenEvent: MVI.Event {
-    class OnClickArticle(val article: PoliceActArticle): PoliceActScreenEvent
-    class Init(val listArticles: List<PoliceActArticle>): PoliceActScreenEvent
-}
-
-sealed interface PoliceActScreenEffect: MVI.Effect
-
-data class PoliceActArticle(
-    val id: Double,
-    val nameItemAct: String,
+    override val contentState: ContentState,
+    val dateRedaction: String,
+    val activeArticle: ActArticleResponse,
     val titleAct: String,
-    val listParts: List<String>
-) {
-    companion object{
-        fun getPreviewItem(id: Int): PoliceActArticle = PoliceActArticle(
-            id = id.toDouble(),
-            nameItemAct = id.toString(),
-            titleAct = "Статья $id",
-            listParts = listOf(
-                "1. Полиция предназначена для защиты жизни, здоровья, прав и свобод граждан Российской Федерации, иностранных граждан, лиц без гражданства (далее также - граждане; лица), для противодействия преступности, охраны общественного порядка, собственности и для обеспечения общественной безопасности.",
-                "1. Полиция предназначена для защиты жизни, здоровья, прав и свобод граждан Российской Федерации, иностранных граждан, лиц без гражданства (далее также - граждане; лица), для противодействия преступности, охраны общественного порядка, собственности и для обеспечения общественной безопасности.",
-                "1. Полиция предназначена для защиты жизни, здоровья, прав и свобод граждан Российской Федерации, иностранных граждан, лиц без гражданства (далее также - граждане; лица), для противодействия преступности, охраны общественного порядка, собственности и для обеспечения общественной безопасности.",
-                "1. Полиция предназначена для защиты жизни, здоровья, прав и свобод граждан Российской Федерации, иностранных граждан, лиц без гражданства (далее также - граждане; лица), для противодействия преступности, охраны общественного порядка, собственности и для обеспечения общественной безопасности.",
-                "1. Полиция предназначена для защиты жизни, здоровья, прав и свобод граждан Российской Федерации, иностранных граждан, лиц без гражданства (далее также - граждане; лица), для противодействия преступности, охраны общественного порядка, собственности и для обеспечения общественной безопасности.",
+    val listArticles: List<ActArticleResponse>,
+    val listArticlesName: List<String>,
+) : MVI.State() {
+    companion object {
+        private fun partDemo() = PartArticleResponse(
+            partText = "1. Деятельность полиции осуществляется по следующим основным направлениям:",
+            points = listOf(
+                "1) защита личности, общества, государства от противоправных посягательств;",
+                "2) предупреждение и пресечение преступлений и административных правонарушений;"
             )
         )
 
-        fun getPreviewList() : List<PoliceActArticle> = listOf(
-            getPreviewItem(1),
-            getPreviewItem(2),
-            getPreviewItem(3),
-            getPreviewItem(4),
-            getPreviewItem(5),
-            getPreviewItem(6),
+        private fun articleDemo(id: Double) = ActArticleResponse(
+            id = id,
+            listParts = listOf(partDemo(), partDemo()),
+            numArticle = "${id.toInt()}",
+            titleArticle = "Статья 2. Основные направления деятельности полиции"
+        )
+
+        fun getPreview() = PoliceActScreenState(
+            contentState = ContentState.Content,
+            dateRedaction = "06.02.2023",
+            titleAct = "Федеральный закон от 07.02.2011 N 3-ФЗ \"О полиции\"",
+            activeArticle = articleDemo(1.0),
+            listArticlesName = listOf("1", "2"),
+            listArticles = listOf(articleDemo(1.0), articleDemo(2.0)),
+        )
+
+        fun getDefault() = PoliceActScreenState(
+            contentState = ContentState.Loading,
+            dateRedaction = "",
+            listArticles = emptyList(),
+            listArticlesName = emptyList(),
+            activeArticle = articleDemo(1.0),
+            titleAct = ""
         )
     }
 }
+
+sealed interface PoliceActScreenEvent : MVI.Event {
+    class OnClickArticle(val article: ActArticleResponse) : PoliceActScreenEvent
+    object Init: PoliceActScreenEvent
+}
+
+sealed interface PoliceActScreenEffect : MVI.Effect

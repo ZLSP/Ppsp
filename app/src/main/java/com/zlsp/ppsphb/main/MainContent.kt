@@ -154,7 +154,7 @@ private fun TopBar(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = stringResource(titleRes),
-                    style = Theme.typography.title
+                    style = Theme.typography.titleScreen
                 )
                 IconButton(onClick = onClickThemeMode) {
                     Icon(
