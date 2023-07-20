@@ -4,7 +4,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zlsp.ppsphb.data.repository.police_act.models.GetAppDataResponse
-import timber.log.Timber
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -20,13 +19,8 @@ class AssetJsonReader @Inject constructor(context: Context) {
         return Gson().fromJson(reader, personListType)
     }
 
-    fun getLocalAppData(): GetAppDataResponse? {
-        return try {
-            val inputStream: InputStream = assetManager.open("app_data.json")
-            readJsonFromAsset(inputStream)
-        } catch (e: Exception) {
-            Timber.tag("LocalAppData").e(e)
-            null
-        }
+    fun getLocalAppData(): GetAppDataResponse {
+        val inputStream: InputStream = assetManager.open("app_data.json")
+        return readJsonFromAsset(inputStream)
     }
 }

@@ -52,7 +52,7 @@ data class AppTypography(
                 )
 
                 TypographySize.NORMAL -> AppTypography(
-                    titleScreen = title.copy(fontSize = 23.sp),
+                    titleScreen = title.copy(fontSize = 22.sp),
                     numArticle = numArticle.copy(fontSize = 21.sp),
                     titleArticle = titleArticle.copy(fontSize = 21.sp),
                     textBody = textBody.copy(fontSize = 17.sp),
@@ -61,7 +61,7 @@ data class AppTypography(
                 )
 
                 TypographySize.BIG -> AppTypography(
-                    titleScreen = title.copy(fontSize = 26.sp),
+                    titleScreen = title.copy(fontSize = 24.sp),
                     numArticle = numArticle.copy(fontSize = 24.sp),
                     titleArticle = titleArticle.copy(fontSize = 24.sp),
                     textBody = textBody.copy(fontSize = 20.sp),

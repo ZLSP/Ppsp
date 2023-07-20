@@ -1,5 +1,8 @@
 package com.zlsp.ppsphb.ui.screens.police_act
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,19 +41,15 @@ import com.zlsp.ppsphb.ui.theme.Theme
 @Composable
 fun PoliceActScreen(
     state: PoliceActScreenState,
+    isVisibleUiBars: Boolean,
     sendEvent: (PoliceActScreenEvent) -> Unit,
 ) {
     Box(Modifier.fillMaxSize()) {
         Row {
             ListParts(state.activeArticle)
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp),
-                color = Theme.colors.secondary
-            )
             ListArticlesNumber(
                 activeArticle = state.activeArticle.id,
+                isVisible = isVisibleUiBars,
                 listArticle = state.listArticles,
                 onClickItem = { sendEvent(PoliceActScreenEvent.OnClickArticle(it)) }
             )
@@ -70,6 +69,7 @@ fun PoliceActScreen(
 @Composable
 private fun ListArticlesNumber(
     activeArticle: Double,
+    isVisible: Boolean,
     listArticle: List<ActArticleResponse>,
     onClickItem: (ActArticleResponse) -> Unit
 ) {
@@ -84,37 +84,49 @@ private fun ListArticlesNumber(
         Modifier
     }
     val elevation = if (isDarkMode) 0.dp else 15.dp
-    LazyColumn(
-        modifier = Modifier.fillMaxHeight(),
-        contentPadding = PaddingValues(horizontal = 5.dp)
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = expandHorizontally(),
+        exit = shrinkHorizontally(),
     ) {
-        item { Spacer(Modifier.height(10.dp)) }
-        items(
-            items = listArticle,
-            key = { it.id },
+        Divider(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp),
+            color = Theme.colors.secondary
+        )
+        LazyColumn(
+            modifier = Modifier.fillMaxHeight(),
+            contentPadding = PaddingValues(horizontal = 5.dp)
         ) {
-            val background = if (it.id == activeArticle) {
-                Theme.colors.secondary
-            } else {
-                Theme.colors.background
-            }
-            Spacer(Modifier.height(10.dp))
-            Card(
-                modifier = modifier.clickable { onClickItem(it) },
-                backgroundColor = background,
-                elevation = elevation,
-                shape = RoundedCornerShape(6.dp),
+            item { Spacer(Modifier.height(10.dp)) }
+            items(
+                items = listArticle,
+                key = { it.id },
             ) {
-                Box(Modifier.size(50.dp)) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = it.numArticle,
-                        style = Theme.typography.numArticle
-                    )
+                val background = if (it.id == activeArticle) {
+                    Theme.colors.secondary
+                } else {
+                    Theme.colors.background
+                }
+                Spacer(Modifier.height(10.dp))
+                Card(
+                    modifier = modifier.clickable { onClickItem(it) },
+                    backgroundColor = background,
+                    elevation = elevation,
+                    shape = RoundedCornerShape(6.dp),
+                ) {
+                    Box(Modifier.size(50.dp)) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = it.numArticle,
+                            style = Theme.typography.numArticle
+                        )
+                    }
                 }
             }
+            item { Spacer(Modifier.height(10.dp)) }
         }
-        item { Spacer(Modifier.height(10.dp)) }
     }
 }
 
@@ -198,6 +210,7 @@ private fun RowScope.ListParts(article: ActArticleResponse) {
 private fun PreviewLight() = AppTheme(false) {
     PoliceActScreen(
         state = PoliceActScreenState.getPreview(),
+        isVisibleUiBars = true,
         sendEvent = {}
     )
 }
@@ -207,6 +220,7 @@ private fun PreviewLight() = AppTheme(false) {
 private fun PreviewDark() = AppTheme {
     PoliceActScreen(
         state = PoliceActScreenState.getPreview(),
+        isVisibleUiBars = true,
         sendEvent = {}
     )
 }
