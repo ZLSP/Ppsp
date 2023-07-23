@@ -3,6 +3,8 @@ package com.zlsp.ppsphb.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.zlsp.ppsphb.data.network.ktor.KtorDataSource
+import com.zlsp.ppsphb.data.repository.authority.AuthorityRepository
+import com.zlsp.ppsphb.data.repository.authority.AuthorityRepositoryImpl
 import com.zlsp.ppsphb.data.repository.main.MainRepository
 import com.zlsp.ppsphb.data.repository.main.MainRepositoryImpl
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
@@ -54,4 +56,9 @@ class DomainModule {
     @Singleton
     fun providePoliceActRepository(mainRepository: MainRepository): PoliceActRepository =
         PoliceActRepositoryImpl(mainRepository)
+
+    @Provides
+    @Singleton
+    fun provideAuthorityRepository(mainRepository: MainRepository): AuthorityRepository =
+        AuthorityRepositoryImpl(mainRepository)
 }

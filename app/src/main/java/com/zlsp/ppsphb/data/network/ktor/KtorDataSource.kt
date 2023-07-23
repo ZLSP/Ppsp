@@ -1,6 +1,6 @@
 package com.zlsp.ppsphb.data.network.ktor
 
-import com.zlsp.ppsphb.data.repository.police_act.models.GetAppDataResponse
+import com.zlsp.ppsphb.data.repository.main.model.GetAppDataResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import javax.inject.Inject

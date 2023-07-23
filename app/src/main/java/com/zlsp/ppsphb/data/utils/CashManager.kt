@@ -1,7 +1,7 @@
 package com.zlsp.ppsphb.data.utils
 
 import android.util.LruCache
-import com.zlsp.ppsphb.data.repository.police_act.models.GetAppDataResponse
+import com.zlsp.ppsphb.data.repository.main.model.GetAppDataResponse
 
 class CacheManager {
 

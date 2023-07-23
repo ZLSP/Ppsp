@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,16 +25,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
-import com.zlsp.ppsphb.ui.general.ErrorLayout
-import com.zlsp.ppsphb.ui.general.LoadingLayout
+import com.zlsp.ppsphb.ui.general.DefaultScreenWrapper
+import com.zlsp.ppsphb.ui.general.ViewCardCustomElevation
 import com.zlsp.ppsphb.ui.theme.AppTheme
-import com.zlsp.ppsphb.ui.theme.LocalThemeMode
 import com.zlsp.ppsphb.ui.theme.Theme
 
 @Composable
@@ -44,7 +39,10 @@ fun PoliceActScreen(
     isVisibleUiBars: Boolean,
     sendEvent: (PoliceActScreenEvent) -> Unit,
 ) {
-    Box(Modifier.fillMaxSize()) {
+    DefaultScreenWrapper(
+        contentState = state.contentState,
+        onClickButtonError = { sendEvent(PoliceActScreenEvent.Init) }
+    ) {
         Row {
             ListParts(state.activeArticle)
             ListArticlesNumber(
@@ -53,15 +51,6 @@ fun PoliceActScreen(
                 listArticle = state.listArticles,
                 onClickItem = { sendEvent(PoliceActScreenEvent.OnClickArticle(it)) }
             )
-        }
-        when (state.contentState) {
-            is ContentState.Content -> {}
-            is ContentState.Error -> ErrorLayout(
-                title = state.contentState.text,
-                onClick = { sendEvent(PoliceActScreenEvent.Init) }
-            )
-
-            is ContentState.Loading -> LoadingLayout()
         }
     }
 }
@@ -73,17 +62,6 @@ private fun ListArticlesNumber(
     listArticle: List<ActArticleResponse>,
     onClickItem: (ActArticleResponse) -> Unit
 ) {
-    val isDarkMode = LocalThemeMode.current.isDarkMode
-    val modifier = if (isDarkMode) {
-        Modifier.shadow(
-            elevation = 25.dp,
-            spotColor = Color.White,
-            shape = RoundedCornerShape(6.dp)
-        )
-    } else {
-        Modifier
-    }
-    val elevation = if (isDarkMode) 0.dp else 15.dp
     AnimatedVisibility(
         visible = isVisible,
         enter = expandHorizontally(),
@@ -110,11 +88,10 @@ private fun ListArticlesNumber(
                     Theme.colors.background
                 }
                 Spacer(Modifier.height(10.dp))
-                Card(
-                    modifier = modifier.clickable { onClickItem(it) },
+                ViewCardCustomElevation(
+                    modifier = Modifier.clickable { onClickItem(it) },
                     backgroundColor = background,
-                    elevation = elevation,
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(6.dp)
                 ) {
                     Box(Modifier.size(50.dp)) {
                         Text(
@@ -132,17 +109,6 @@ private fun ListArticlesNumber(
 
 @Composable
 private fun RowScope.ListParts(article: ActArticleResponse) {
-    val isDarkMode = LocalThemeMode.current.isDarkMode
-    val modifier = if (isDarkMode) {
-        Modifier.shadow(
-            elevation = 20.dp,
-            spotColor = Color.White,
-            shape = RoundedCornerShape(12.dp)
-        )
-    } else {
-        Modifier
-    }
-    val elevation = if (isDarkMode) 0.dp else 15.dp
     LazyColumn(
         modifier = Modifier
             .fillMaxHeight()
@@ -161,13 +127,7 @@ private fun RowScope.ListParts(article: ActArticleResponse) {
             items = article.listParts
         ) {
             Spacer(Modifier.height(10.dp))
-            Card(
-                modifier = modifier,
-                backgroundColor = Theme.colors.background,
-                contentColor = Theme.colors.onBackground,
-                elevation = elevation,
-                shape = RoundedCornerShape(12.dp),
-            ) {
+            ViewCardCustomElevation() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

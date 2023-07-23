@@ -1,7 +1,7 @@
 package com.zlsp.ppsphb.data.repository.main
 
 import com.zlsp.ppsphb.data.network.ktor.KtorDataSource
-import com.zlsp.ppsphb.data.repository.police_act.models.GetAppDataResponse
+import com.zlsp.ppsphb.data.repository.main.model.GetAppDataResponse
 import com.zlsp.ppsphb.data.utils.AssetJsonReader
 import com.zlsp.ppsphb.data.utils.CacheManager
 import kotlinx.coroutines.Dispatchers

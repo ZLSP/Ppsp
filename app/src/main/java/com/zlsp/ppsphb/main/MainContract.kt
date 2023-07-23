@@ -15,4 +15,4 @@ data class MainActivityState(
     override val contentState: ContentState = ContentState.Content,
     val isDarkMode: Boolean,
     val typoSize: TypographySize,
-): MVI.State()
+): MVI.State

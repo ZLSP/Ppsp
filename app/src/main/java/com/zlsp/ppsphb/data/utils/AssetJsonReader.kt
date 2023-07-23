@@ -3,7 +3,7 @@ package com.zlsp.ppsphb.data.utils
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.zlsp.ppsphb.data.repository.police_act.models.GetAppDataResponse
+import com.zlsp.ppsphb.data.repository.main.model.GetAppDataResponse
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
