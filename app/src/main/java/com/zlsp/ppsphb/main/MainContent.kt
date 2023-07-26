@@ -56,6 +56,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zlsp.ppsphb.R
@@ -63,6 +64,9 @@ import com.zlsp.ppsphb.base.baseComposable
 import com.zlsp.ppsphb.domain.Screen
 import com.zlsp.ppsphb.ui.screens.authority.AuthorityScreen
 import com.zlsp.ppsphb.ui.screens.authority.AuthorityViewModel
+import com.zlsp.ppsphb.ui.screens.grounds.GroundsScreen
+import com.zlsp.ppsphb.ui.screens.grounds.GroundsViewModel
+import com.zlsp.ppsphb.ui.screens.gun.GunScreen
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActScreen
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActViewModel
 import com.zlsp.ppsphb.ui.theme.Theme
@@ -110,24 +114,21 @@ fun MainContent(
                 }
 
                 baseComposable(
+                    route = Screen.GROUNDS.route,
+                    getViewModel = { hiltViewModel<GroundsViewModel>() }
+                ) { state, sendEvent ->
+                    GroundsScreen(state, sendEvent)
+                }
+
+                composable(Screen.GUN.route) {
+                    GunScreen()
+                }
+
+                baseComposable(
                     route = Screen.AUTHORITY.route,
                     getViewModel = { hiltViewModel<AuthorityViewModel>() }
                 ) { state, sendEvent ->
                     AuthorityScreen(state, sendEvent)
-                }
-
-                baseComposable(
-                    route = Screen.GUN.route,
-                    getViewModel = { hiltViewModel<PoliceActViewModel>() }
-                ) { state, sendEvent ->
-
-                }
-
-                baseComposable(
-                    route = Screen.GROUNDS.route,
-                    getViewModel = { hiltViewModel<PoliceActViewModel>() }
-                ) { state, sendEvent ->
-
                 }
 
                 baseComposable(

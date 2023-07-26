@@ -2,28 +2,36 @@ package com.zlsp.ppsphb.ui.screens.authority
 
 import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.base.MVI
-import com.zlsp.ppsphb.data.repository.authority.model.AuthorityResponse
+import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
 
 data class AuthorityScreenState(
     override val contentState: ContentState,
-    val listAuthority: List<AuthorityResponse>
+    val titleContent: String,
+    val authorityList: List<ActArticleResponse>
 ): MVI.State {
     companion object {
-        fun getPreview() = AuthorityScreenState(
-            contentState = ContentState.Content,
-            listAuthority = listOf(AuthorityResponse.getDemo(1.0), AuthorityResponse.getDemo(2.0))
-        )
-
         fun getDefault() = AuthorityScreenState(
             contentState = ContentState.Loading,
-            listAuthority = emptyList()
+            titleContent = "",
+            authorityList = emptyList()
+        )
+
+        fun getPreview() = AuthorityScreenState(
+            contentState = ContentState.Content,
+            titleContent = "Должностные лица ППСП уполномочены составлять протоколы об АП, предусмотренных КоАП РФ по следующим статьям:",
+            authorityList = listOf(
+                ActArticleResponse.getDemo(1.0),
+                ActArticleResponse.getDemo(2.0),
+                ActArticleResponse.getDemo(3.0),
+            )
         )
     }
 }
 
 sealed interface AuthorityScreenEvent: MVI.Event{
-    class OnClickItem(val authorityItem: AuthorityResponse): AuthorityScreenEvent
     object Init: AuthorityScreenEvent
 }
 
-sealed interface AuthorityScreenEffect: MVI.Effect
+sealed interface AuthorityScreenEffect: MVI.Effect {
+
+}

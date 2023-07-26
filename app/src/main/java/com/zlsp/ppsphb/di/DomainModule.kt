@@ -5,14 +5,16 @@ import android.content.SharedPreferences
 import com.zlsp.ppsphb.data.network.ktor.KtorDataSource
 import com.zlsp.ppsphb.data.repository.authority.AuthorityRepository
 import com.zlsp.ppsphb.data.repository.authority.AuthorityRepositoryImpl
+import com.zlsp.ppsphb.data.repository.grounds.GroundsRepository
+import com.zlsp.ppsphb.data.repository.grounds.GroundsRepositoryImpl
 import com.zlsp.ppsphb.data.repository.main.MainRepository
 import com.zlsp.ppsphb.data.repository.main.MainRepositoryImpl
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepositoryImpl
-import com.zlsp.ppsphb.data.repository.theme.ThemeRepositoryImpl
-import com.zlsp.ppsphb.data.utils.UserStorage
 import com.zlsp.ppsphb.data.repository.theme.ThemeRepository
+import com.zlsp.ppsphb.data.repository.theme.ThemeRepositoryImpl
 import com.zlsp.ppsphb.data.utils.AssetJsonReader
+import com.zlsp.ppsphb.data.utils.UserStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,7 +51,10 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideMainRepository(dataSource: KtorDataSource, assetJsonReader: AssetJsonReader): MainRepository =
+    fun provideMainRepository(
+        dataSource: KtorDataSource,
+        assetJsonReader: AssetJsonReader
+    ): MainRepository =
         MainRepositoryImpl(dataSource, assetJsonReader)
 
     @Provides
@@ -59,6 +64,12 @@ class DomainModule {
 
     @Provides
     @Singleton
+    fun provideGroundsRepository(mainRepository: MainRepository): GroundsRepository =
+        GroundsRepositoryImpl(mainRepository)
+
+    @Provides
+    @Singleton
     fun provideAuthorityRepository(mainRepository: MainRepository): AuthorityRepository =
         AuthorityRepositoryImpl(mainRepository)
+
 }

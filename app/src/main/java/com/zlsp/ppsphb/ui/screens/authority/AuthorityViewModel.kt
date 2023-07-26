@@ -1,11 +1,9 @@
 package com.zlsp.ppsphb.ui.screens.authority
 
-import androidx.lifecycle.viewModelScope
 import com.zlsp.ppsphb.base.BaseViewModel
 import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.authority.AuthorityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -16,28 +14,30 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthorityViewModel @Inject constructor(private val authorityRepository: AuthorityRepository) :
     BaseViewModel<AuthorityScreenState, AuthorityScreenEffect, AuthorityScreenEvent>() {
-    override val containerHost: Container<AuthorityScreenState, AuthorityScreenEffect> =
-        container(AuthorityScreenState.getDefault()) {
-            init()
-        }
+    override val containerHost: Container<AuthorityScreenState, AuthorityScreenEffect> = container(
+        AuthorityScreenState.getDefault()
+    ) {
+        init()
+    }
 
     override fun sendEvent(event: AuthorityScreenEvent) {
-
+        when (event) {
+            AuthorityScreenEvent.Init -> init()
+        }
     }
 
     private fun init() = intent {
         reduce { state.copy(contentState = ContentState.Loading) }
-        authorityRepository.getListAuthority()
+        authorityRepository.getAuthority()
             .onEach {
-                val newState = if (it.isEmpty()) {
-                    state.copy(contentState = ContentState.Error("Что-то пошло не так!"))
-                } else {
+                reduce {
                     state.copy(
                         contentState = ContentState.Content,
-                        listAuthority = it
+                        titleContent = it.title,
+                        authorityList = it.listAuthority
                     )
                 }
-                reduce { newState }
-            }.launchIn(viewModelScope)
+            }
     }
+
 }

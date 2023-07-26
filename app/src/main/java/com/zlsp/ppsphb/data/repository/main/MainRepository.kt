@@ -4,5 +4,5 @@ import com.zlsp.ppsphb.data.repository.main.model.GetAppDataResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
-    fun getAppData(): Flow<GetAppDataResponse?>
+    fun getAppData(): Flow<GetAppDataResponse>
 }

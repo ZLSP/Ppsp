@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class AuthorityRepositoryImpl @Inject constructor(private val mainRepository: MainRepository) :
     AuthorityRepository {
-    override suspend fun getListAuthority(): Flow<List<AuthorityResponse>> {
+    override suspend fun getAuthority(): Flow<AuthorityResponse> {
         return mainRepository.getAppData().map {
-            it?.listAuthority?: emptyList()
+            it.authority
         }
     }
 }

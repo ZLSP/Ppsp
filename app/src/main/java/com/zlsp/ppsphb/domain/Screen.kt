@@ -10,9 +10,9 @@ enum class Screen(val route: String, @StringRes val nameRes: Int, @DrawableRes v
         nameRes = R.string.police_act_screen_name,
         iconRes = R.drawable.ic_tab_police_act
     ),
-    AUTHORITY(
-        route = "authority",
-        nameRes = R.string.authority_screen_name,
+    GROUNDS(
+        route = "grounds",
+        nameRes = R.string.grounds_screen_name,
         iconRes = R.drawable.ic_tab_authority
     ),
     GUN(
@@ -20,9 +20,9 @@ enum class Screen(val route: String, @StringRes val nameRes: Int, @DrawableRes v
         nameRes = R.string.gun_screen_name,
         iconRes = R.drawable.ic_tab_gun
     ),
-    GROUNDS(
-        route = "grounds",
-        nameRes = R.string.grounds_screen_name,
+    AUTHORITY(
+        route = "authority",
+        nameRes = R.string.authority_screen_name,
         iconRes = R.drawable.ic_tab_grounds
     ),
     MATERIALS(
