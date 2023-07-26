@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,10 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zlsp.ppsphb.data.repository.grounds.model.GroundsResponse
-import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
-import com.zlsp.ppsphb.data.repository.police_act.models.PartArticleResponse
 import com.zlsp.ppsphb.ui.general.DefaultScreenWrapper
+import com.zlsp.ppsphb.ui.general.ViewArticleItem
 import com.zlsp.ppsphb.ui.general.ViewCardCustomElevation
+import com.zlsp.ppsphb.ui.general.ViewPartItem
 import com.zlsp.ppsphb.ui.general.ViewPointItem
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.Theme
@@ -88,12 +87,15 @@ private fun AuthorityItem(authority: GroundsResponse) {
             ) {
                 Column(Modifier.fillMaxWidth()) {
                     authority.listArticles.forEach { article ->
-                        ArticleItem(article)
+                        ViewArticleItem(article)
                         article.listParts.forEach { part ->
-                            PartItem(part)
+                            ViewPartItem(part)
                             part.points?.let { points ->
                                 points.forEach { point ->
-                                    ViewPointItem(point)
+                                    ViewPointItem(
+                                        pointText = point,
+                                        backgroundColor = Theme.colors.onBackground
+                                    )
                                 }
                             }
                         }
@@ -102,30 +104,6 @@ private fun AuthorityItem(authority: GroundsResponse) {
             }
         }
     }
-}
-
-@Composable
-private fun ArticleItem(article: ActArticleResponse) {
-    Spacer(Modifier.height(10.dp))
-    Divider(color = Theme.colors.onBackground.copy(0.1f))
-    Spacer(Modifier.height(10.dp))
-    Text(
-        text = article.titleArticle,
-        style = Theme.typography.titleArticle,
-        color = Theme.colors.onBackground
-    )
-    Spacer(Modifier.height(10.dp))
-    Divider(color = Theme.colors.onBackground.copy(0.1f))
-}
-
-@Composable
-private fun PartItem(part: PartArticleResponse) {
-    Spacer(Modifier.height(10.dp))
-    Text(
-        text = part.partText,
-        style = Theme.typography.titlePart,
-        color = Theme.colors.onBackground
-    )
 }
 
 @Composable

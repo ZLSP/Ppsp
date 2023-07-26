@@ -1,9 +1,11 @@
 package com.zlsp.ppsphb.ui.screens.authority
 
+import androidx.lifecycle.viewModelScope
 import com.zlsp.ppsphb.base.BaseViewModel
 import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.authority.AuthorityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -37,7 +39,7 @@ class AuthorityViewModel @Inject constructor(private val authorityRepository: Au
                         authorityList = it.listAuthority
                     )
                 }
-            }
+            }.launchIn(viewModelScope)
     }
 
 }

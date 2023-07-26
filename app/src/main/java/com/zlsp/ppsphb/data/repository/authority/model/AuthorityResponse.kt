@@ -6,6 +6,6 @@ import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
 data class AuthorityResponse(
     @SerializedName("title")
     val title: String,
-    @SerializedName("listAuthority")
+    @SerializedName("listArticles")
     val listAuthority: List<ActArticleResponse>
 )

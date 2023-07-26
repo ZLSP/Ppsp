@@ -165,7 +165,10 @@ private fun PartItem(part: PartArticleResponse) {
                 style = Theme.typography.titlePart
             )
             part.points?.forEach { point ->
-                ViewPointItem(point)
+                ViewPointItem(
+                    pointText = point,
+                    backgroundColor = Theme.colors.onBackground
+                )
                 Spacer(Modifier.height(5.dp))
             }
         }

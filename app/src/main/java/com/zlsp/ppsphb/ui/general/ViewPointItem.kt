@@ -10,15 +10,19 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zlsp.ppsphb.ui.theme.Theme
 
 @Composable
-fun ViewPointItem(pointText: String) {
+fun ViewPointItem(
+    pointText: String,
+    backgroundColor: Color
+) {
     Spacer(Modifier.height(5.dp))
     Card(
         modifier = Modifier.fillMaxWidth(),
-        backgroundColor = Theme.colors.onBackground.copy(0.1f),
+        backgroundColor = backgroundColor.copy(0.2f),
         shape = RoundedCornerShape(12.dp),
         elevation = 0.dp,
         contentColor = Theme.colors.onBackground
