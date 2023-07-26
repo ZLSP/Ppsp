@@ -134,7 +134,7 @@ private fun RowScope.ListParts(article: ActArticleResponse) {
             ListTitle(article.titleArticle)
         }
         items(
-            items = article.listParts,
+            items = article.listParts?: emptyList(),
             itemContent = { PartItem(it) }
         )
         item { Spacer(Modifier.height(20.dp)) }

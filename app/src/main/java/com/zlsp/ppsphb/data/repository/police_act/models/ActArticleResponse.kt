@@ -9,7 +9,7 @@ data class ActArticleResponse(
     @SerializedName("id")
     val id: Double,
     @SerializedName("listParts")
-    val listParts: List<PartArticleResponse>,
+    val listParts: List<PartArticleResponse>?,
     @SerializedName("numArticle")
     val numArticle: String,
     @SerializedName("titleArticle")

@@ -101,7 +101,7 @@ private fun AuthorityItem(
             ) {
                 Column(Modifier.fillMaxWidth()) {
                     ViewArticleItem(article)
-                    article.listParts.forEach { part ->
+                    article.listParts?.forEach { part ->
                         ViewPartItem(part)
                         part.points?.let {
                             ViewPointItem(

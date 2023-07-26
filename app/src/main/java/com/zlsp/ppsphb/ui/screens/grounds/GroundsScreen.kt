@@ -99,7 +99,7 @@ private fun GroundsItem(
                 Column(Modifier.fillMaxWidth()) {
                     ground.listArticles.forEach { article ->
                         ViewArticleItem(article)
-                        article.listParts.forEach { part ->
+                        article.listParts?.forEach { part ->
                             ViewPartItem(part)
                             part.points?.let { points ->
                                 points.forEach { point ->
