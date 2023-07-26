@@ -38,4 +38,6 @@ sealed interface PoliceActScreenEvent : MVI.Event {
     object Init : PoliceActScreenEvent
 }
 
-sealed interface PoliceActScreenEffect : MVI.Effect
+sealed interface PoliceActScreenEffect : MVI.Effect {
+    object ShowAd: PoliceActScreenEffect
+}

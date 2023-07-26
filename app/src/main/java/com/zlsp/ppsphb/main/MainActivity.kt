@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.zlsp.ppsphb.data.utils.YandexAdsUtils
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.LocalThemeMode
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
+        YandexAdsUtils.initYandex(this)
         setContent {
             val viewModel = hiltViewModel<MainViewModel>()
             val state = viewModel.collectAsState().value

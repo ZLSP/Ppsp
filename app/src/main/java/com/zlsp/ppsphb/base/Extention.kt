@@ -25,12 +25,12 @@ fun animateColor(targetColor: Color): Color {
 fun <State : MVI.State, Effect : MVI.Effect, Event : MVI.Event> NavGraphBuilder.baseComposable(
     route: String,
     getViewModel: @Composable () -> BaseViewModel<State, Effect, Event>,
-    content: @Composable (state: State, sendEvent: (Event) -> Unit) -> Unit
+    content: @Composable (BaseViewModel<State, Effect, Event>) -> Unit
 ) {
     composable(route) {
         val viewModel = getViewModel.invoke()
         val state by viewModel.collectAsState()
         val sendEvent = viewModel::sendEvent
-        content(state, sendEvent)
+        content(getViewModel.invoke())
     }
 }

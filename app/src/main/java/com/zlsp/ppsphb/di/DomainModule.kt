@@ -59,8 +59,8 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providePoliceActRepository(mainRepository: MainRepository): PoliceActRepository =
-        PoliceActRepositoryImpl(mainRepository)
+    fun providePoliceActRepository(mainRepository: MainRepository, userStorage: UserStorage): PoliceActRepository =
+        PoliceActRepositoryImpl(mainRepository, userStorage)
 
     @Provides
     @Singleton

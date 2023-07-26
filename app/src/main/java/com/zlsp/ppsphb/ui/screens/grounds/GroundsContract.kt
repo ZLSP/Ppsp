@@ -25,4 +25,7 @@ sealed interface GroundsScreenEvent: MVI.Event{
     object Init: GroundsScreenEvent
 }
 
-sealed interface GroundsScreenEffect: MVI.Effect
+sealed interface GroundsScreenEffect: MVI.Effect {
+    object ShowAd: GroundsScreenEffect
+
+}

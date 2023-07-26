@@ -47,10 +47,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -59,17 +62,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.yandex.mobile.ads.banner.BannerAdView
 import com.zlsp.ppsphb.R
 import com.zlsp.ppsphb.base.baseComposable
+import com.zlsp.ppsphb.data.utils.YandexAdsUtils
 import com.zlsp.ppsphb.domain.Screen
 import com.zlsp.ppsphb.ui.screens.authority.AuthorityScreen
+import com.zlsp.ppsphb.ui.screens.authority.AuthorityScreenEffect
 import com.zlsp.ppsphb.ui.screens.authority.AuthorityViewModel
 import com.zlsp.ppsphb.ui.screens.grounds.GroundsScreen
+import com.zlsp.ppsphb.ui.screens.grounds.GroundsScreenEffect
 import com.zlsp.ppsphb.ui.screens.grounds.GroundsViewModel
 import com.zlsp.ppsphb.ui.screens.gun.GunScreen
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActScreen
+import com.zlsp.ppsphb.ui.screens.police_act.PoliceActScreenEffect
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActViewModel
 import com.zlsp.ppsphb.ui.theme.Theme
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun MainContent(
@@ -89,7 +99,12 @@ fun MainContent(
                 onClickFullScreen = { isVisibleUiBars = false }
             )
         },
-        bottomBar = { BottomBar(navController, isVisibleUiBars) },
+        bottomBar = {
+            Column(Modifier.fillMaxWidth()) {
+                BottomBar(navController, isVisibleUiBars)
+                YandexBanner()
+            }
+        },
         floatingActionButton = {
             FloatingButtons(
                 isVisible = !isVisibleUiBars,
@@ -109,15 +124,31 @@ fun MainContent(
                 baseComposable(
                     route = Screen.POLICE_ACT.route,
                     getViewModel = { hiltViewModel<PoliceActViewModel>() }
-                ) { state, sendEvent ->
+                ) { viewModel ->
+                    val state = viewModel.collectAsState().value
+                    val sendEvent = viewModel::sendEvent
+                    val context = LocalContext.current
                     PoliceActScreen(state, isVisibleUiBars, sendEvent)
+                    viewModel.collectSideEffect { effect ->
+                        when (effect) {
+                            PoliceActScreenEffect.ShowAd -> YandexAdsUtils.showInterstitial(context)
+                        }
+                    }
                 }
 
                 baseComposable(
                     route = Screen.GROUNDS.route,
                     getViewModel = { hiltViewModel<GroundsViewModel>() }
-                ) { state, sendEvent ->
+                ) { viewModel ->
+                    val state = viewModel.collectAsState().value
+                    val sendEvent = viewModel::sendEvent
+                    val context = LocalContext.current
                     GroundsScreen(state, sendEvent)
+                    viewModel.collectSideEffect { effect ->
+                        when (effect) {
+                            GroundsScreenEffect.ShowAd -> YandexAdsUtils.showInterstitial(context)
+                        }
+                    }
                 }
 
                 composable(Screen.GUN.route) {
@@ -127,19 +158,42 @@ fun MainContent(
                 baseComposable(
                     route = Screen.AUTHORITY.route,
                     getViewModel = { hiltViewModel<AuthorityViewModel>() }
-                ) { state, sendEvent ->
+                ) { viewModel ->
+                    val state = viewModel.collectAsState().value
+                    val sendEvent = viewModel::sendEvent
+                    val context = LocalContext.current
                     AuthorityScreen(state, sendEvent)
+                    viewModel.collectSideEffect { effect ->
+                        when (effect) {
+                            AuthorityScreenEffect.ShowAd -> YandexAdsUtils.showInterstitial(context)
+                        }
+                    }
                 }
 
                 baseComposable(
                     route = Screen.MATERIALS.route,
                     getViewModel = { hiltViewModel<PoliceActViewModel>() }
-                ) { state, sendEvent ->
+                ) { viewModel ->
+                    val state = viewModel.collectAsState().value
+                    val sendEvent = viewModel::sendEvent
 
                 }
             }
         }
     }
+}
+
+@Composable
+private fun YandexBanner() {
+    val widthDp = LocalConfiguration.current.screenWidthDp
+    AndroidView(
+        modifier = Modifier.fillMaxWidth(),
+        factory = {
+            val banner = BannerAdView(it)
+            YandexAdsUtils.initBanner(it, banner, widthDp)
+            banner
+        }
+    )
 }
 
 @Composable

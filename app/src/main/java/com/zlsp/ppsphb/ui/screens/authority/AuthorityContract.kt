@@ -33,5 +33,5 @@ sealed interface AuthorityScreenEvent: MVI.Event{
 }
 
 sealed interface AuthorityScreenEffect: MVI.Effect {
-
+    object ShowAd: AuthorityScreenEffect
 }
