@@ -202,5 +202,31 @@
         ]
       }
     ]
-  }
+  },
+  "materials" : [
+    {
+      "title": "Рапорт об АП",
+      "link": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1NIozTlb12AlfRW0NqwCA_1X0NGomvO9Z"
+    },
+    {
+      "title": "Рапорт свободный",
+      "link": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1fOkAh4zJCMpvSoFNuWfKolXkwiwO_lrS"
+    },
+    {
+      "title": "Рапорт по заявкам 02",
+      "link": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1-8zgue6nIoTnI5gBhvwf5BrshhQrGsWs"
+    },
+    {
+      "title": "Объяснение по АП",
+      "link": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1zlljropr6pSF3U2En-3Fnk-uDPY0rqoH"
+    },
+    {
+      "title": "Объяснение по УП",
+      "link": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1qGk77WNT2uKqtKumGhKtVdGMyXkcmyin"
+    },
+    {
+      "title": "Протокол доставления в ОП",
+      "link": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1nUxo5YqZnSeCFs3DNt8-n4B3SqrwOwxj"
+    }
+  ]
 }

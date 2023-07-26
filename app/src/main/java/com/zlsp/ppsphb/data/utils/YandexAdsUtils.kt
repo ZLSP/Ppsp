@@ -24,11 +24,9 @@ object YandexAdsUtils {
 
     private const val YANDEX_INTERSTITIAL_TAG = "YandexInterstitial"
     private const val YANDEX_INTERSTITIAL_ID = "R-M-1579265-3"
-    private const val yandex_interstitial_id_demo = "R-M-DEMO-320x480"
 
     private const val YANDEX_REWARDED_TAG = "YandexRewarded"
     private const val YANDEX_REWARDED_ID = "R-M-1579265-4"
-    private const val YANDEX_REWARDED_ID_DEMO = "R-M-DEMO-rewarded-client-side-rtb"
 
     private val adRequest = AdRequest.Builder().build()
     private lateinit var interstitialAd: InterstitialAd
@@ -118,7 +116,11 @@ object YandexAdsUtils {
         interstitialAd.loadAd(adRequest)
     }
 
-    fun showRewarded(ctx: Context, openLink: () -> Unit) {
+    fun showRewarded(
+        ctx: Context,
+        onSuccessAction: () -> Unit,
+        showContent: () -> Unit
+    ) {
         rewardedAd = RewardedAd(ctx)
         rewardedAd.setAdUnitId(YANDEX_REWARDED_ID)
         rewardedAd.setRewardedAdEventListener(object : RewardedAdEventListener {
@@ -128,6 +130,7 @@ object YandexAdsUtils {
             }
 
             override fun onAdFailedToLoad(p0: AdRequestError) {
+                showContent()
                 Toast.makeText(ctx, "Повторите попытку позже", Toast.LENGTH_SHORT).show()
                 Timber.tag(YANDEX_REWARDED_TAG).d("onAdFailedToLoad: ${p0.description}")
             }
@@ -137,11 +140,13 @@ object YandexAdsUtils {
             }
 
             override fun onAdDismissed() {
+                showContent()
                 Timber.tag(YANDEX_REWARDED_TAG).d("onAdDismissed")
             }
 
             override fun onRewarded(p0: Reward) {
-                openLink()
+                onSuccessAction()
+                showContent()
                 Timber.tag(YANDEX_REWARDED_TAG).d("onRewarded: ${p0.type} - ${p0.amount}")
             }
 

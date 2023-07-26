@@ -9,6 +9,8 @@ import com.zlsp.ppsphb.data.repository.grounds.GroundsRepository
 import com.zlsp.ppsphb.data.repository.grounds.GroundsRepositoryImpl
 import com.zlsp.ppsphb.data.repository.main.MainRepository
 import com.zlsp.ppsphb.data.repository.main.MainRepositoryImpl
+import com.zlsp.ppsphb.data.repository.materials.MaterialsRepository
+import com.zlsp.ppsphb.data.repository.materials.MaterialsRepositoryImpl
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepositoryImpl
 import com.zlsp.ppsphb.data.repository.theme.ThemeRepository
@@ -71,5 +73,10 @@ class DomainModule {
     @Singleton
     fun provideAuthorityRepository(mainRepository: MainRepository): AuthorityRepository =
         AuthorityRepositoryImpl(mainRepository)
+
+    @Provides
+    @Singleton
+    fun provideMaterialsRepository(mainRepository: MainRepository): MaterialsRepository =
+        MaterialsRepositoryImpl(mainRepository)
 
 }

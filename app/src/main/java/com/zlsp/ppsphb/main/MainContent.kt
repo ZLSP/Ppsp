@@ -65,6 +65,7 @@ import androidx.navigation.compose.rememberNavController
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.zlsp.ppsphb.R
 import com.zlsp.ppsphb.base.baseComposable
+import com.zlsp.ppsphb.data.utils.FileDownload
 import com.zlsp.ppsphb.data.utils.YandexAdsUtils
 import com.zlsp.ppsphb.domain.Screen
 import com.zlsp.ppsphb.ui.screens.authority.AuthorityScreen
@@ -74,6 +75,10 @@ import com.zlsp.ppsphb.ui.screens.grounds.GroundsScreen
 import com.zlsp.ppsphb.ui.screens.grounds.GroundsScreenEffect
 import com.zlsp.ppsphb.ui.screens.grounds.GroundsViewModel
 import com.zlsp.ppsphb.ui.screens.gun.GunScreen
+import com.zlsp.ppsphb.ui.screens.materials.MaterialsScreen
+import com.zlsp.ppsphb.ui.screens.materials.MaterialsScreenEffect
+import com.zlsp.ppsphb.ui.screens.materials.MaterialsScreenEvent
+import com.zlsp.ppsphb.ui.screens.materials.MaterialsViewModel
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActScreen
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActScreenEffect
 import com.zlsp.ppsphb.ui.screens.police_act.PoliceActViewModel
@@ -172,11 +177,27 @@ fun MainContent(
 
                 baseComposable(
                     route = Screen.MATERIALS.route,
-                    getViewModel = { hiltViewModel<PoliceActViewModel>() }
+                    getViewModel = { hiltViewModel<MaterialsViewModel>() }
                 ) { viewModel ->
                     val state = viewModel.collectAsState().value
                     val sendEvent = viewModel::sendEvent
-
+                    val context = LocalContext.current
+                    MaterialsScreen(state, sendEvent)
+                    viewModel.collectSideEffect { effect ->
+                        when (effect) {
+                            is MaterialsScreenEffect.ShowRewardedAd -> YandexAdsUtils.showRewarded(
+                                ctx = context,
+                                onSuccessAction = {
+                                    FileDownload.download(
+                                        url = effect.material.link,
+                                        fileName = effect.material.title + ".docx",
+                                        context = context
+                                    )
+                                },
+                                showContent = { sendEvent(MaterialsScreenEvent.ShowContent) }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -419,5 +440,5 @@ private fun FloatingBtn(
             )
         }
     }
-
 }
+
