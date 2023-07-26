@@ -49,18 +49,29 @@ fun GroundsScreen(
             items(
                 items = state.listGrounds,
                 key = { it.id },
-                itemContent = { AuthorityItem(it) }
+                itemContent = {
+                    GroundsItem(
+                        ground = it,
+                        onClickItem = { sendEvent(GroundsScreenEvent.OnClickItem) }
+                    )
+                }
             )
         }
     }
 }
 
 @Composable
-private fun AuthorityItem(authority: GroundsResponse) {
+private fun GroundsItem(
+    ground: GroundsResponse,
+    onClickItem: () -> Unit
+) {
     var isExpand by remember { mutableStateOf(false) }
     Spacer(Modifier.height(10.dp))
     ViewCardCustomElevation(
-        modifier = Modifier.clickable { isExpand = !isExpand },
+        modifier = Modifier.clickable {
+            isExpand = !isExpand
+            onClickItem()
+        },
         border = BorderStroke(1.dp, Theme.colors.secondary)
     ) {
         Column(
@@ -70,13 +81,13 @@ private fun AuthorityItem(authority: GroundsResponse) {
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = authority.title,
+                text = ground.title,
                 style = Theme.typography.titleScreen.copy(textAlign = TextAlign.Center),
                 color = Theme.colors.onBackground
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = authority.subTitle,
+                text = ground.subTitle,
                 style = Theme.typography.titleArticle.copy(textAlign = TextAlign.Center),
                 color = Theme.colors.onBackground
             )
@@ -86,7 +97,7 @@ private fun AuthorityItem(authority: GroundsResponse) {
                 exit = shrinkVertically()
             ) {
                 Column(Modifier.fillMaxWidth()) {
-                    authority.listArticles.forEach { article ->
+                    ground.listArticles.forEach { article ->
                         ViewArticleItem(article)
                         article.listParts.forEach { part ->
                             ViewPartItem(part)

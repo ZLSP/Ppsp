@@ -23,6 +23,7 @@ data class GroundsScreenState(
 
 sealed interface GroundsScreenEvent: MVI.Event{
     object Init: GroundsScreenEvent
+    object OnClickItem: GroundsScreenEvent
 }
 
 sealed interface GroundsScreenEffect: MVI.Effect {

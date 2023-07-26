@@ -30,6 +30,7 @@ data class AuthorityScreenState(
 
 sealed interface AuthorityScreenEvent: MVI.Event{
     object Init: AuthorityScreenEvent
+    object OnClickItem: AuthorityScreenEvent
 }
 
 sealed interface AuthorityScreenEffect: MVI.Effect {

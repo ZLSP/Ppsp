@@ -5,6 +5,7 @@ import com.zlsp.ppsphb.base.BaseViewModel
 import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
 import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
+import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -16,7 +17,10 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class PoliceActViewModel @Inject constructor(private val policeActRepository: PoliceActRepository) :
+class PoliceActViewModel @Inject constructor(
+    private val policeActRepository: PoliceActRepository,
+    private val yandexAdRepository: YandexAdRepository
+) :
     BaseViewModel<PoliceActScreenState, PoliceActScreenEffect, PoliceActScreenEvent>() {
     override val containerHost: Container<PoliceActScreenState, PoliceActScreenEffect> = container(
         PoliceActScreenState.getDefault()
@@ -54,7 +58,7 @@ class PoliceActViewModel @Inject constructor(private val policeActRepository: Po
 
     private fun onClickArticle(article: ActArticleResponse) = intent {
         reduce { state.copy(activeArticle = article) }
-        if (policeActRepository.checkIsShowAd()) {
+        if (yandexAdRepository.checkIsShowAd()) {
             postSideEffect(PoliceActScreenEffect.ShowAd)
         }
     }

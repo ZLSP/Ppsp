@@ -59,19 +59,28 @@ fun AuthorityScreen(
                 items = state.authorityList,
                 key = { it.id }
             ) {
-                AuthorityItem(it)
+                AuthorityItem(
+                    article = it,
+                    onClickItem = { sendEvent(AuthorityScreenEvent.OnClickItem) }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun AuthorityItem(article: ActArticleResponse) {
+private fun AuthorityItem(
+    article: ActArticleResponse,
+    onClickItem: () -> Unit
+) {
     Spacer(Modifier.height(10.dp))
     var isExpand by remember { mutableStateOf(false) }
     Spacer(Modifier.height(10.dp))
     ViewCardCustomElevation(
-        modifier = Modifier.clickable { isExpand = !isExpand },
+        modifier = Modifier.clickable {
+            isExpand = !isExpand
+            onClickItem()
+        },
         border = BorderStroke(1.dp, Theme.colors.secondary)
     ) {
         Column(

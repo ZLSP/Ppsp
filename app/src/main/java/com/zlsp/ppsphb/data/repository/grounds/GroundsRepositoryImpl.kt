@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GroundsRepositoryImpl @Inject constructor(private val mainRepository: MainRepository) :
+class GroundsRepositoryImpl @Inject constructor(
+    private val mainRepository: MainRepository
+) :
     GroundsRepository {
     override suspend fun getListGrounds(): Flow<List<GroundsResponse>> {
         return mainRepository.getAppData().map {

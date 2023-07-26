@@ -15,6 +15,8 @@ import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
 import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepositoryImpl
 import com.zlsp.ppsphb.data.repository.theme.ThemeRepository
 import com.zlsp.ppsphb.data.repository.theme.ThemeRepositoryImpl
+import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepository
+import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepositoryImpl
 import com.zlsp.ppsphb.data.utils.AssetJsonReader
 import com.zlsp.ppsphb.data.utils.UserStorage
 import dagger.Module
@@ -61,8 +63,8 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun providePoliceActRepository(mainRepository: MainRepository, userStorage: UserStorage): PoliceActRepository =
-        PoliceActRepositoryImpl(mainRepository, userStorage)
+    fun providePoliceActRepository(mainRepository: MainRepository): PoliceActRepository =
+        PoliceActRepositoryImpl(mainRepository)
 
     @Provides
     @Singleton
@@ -79,4 +81,8 @@ class DomainModule {
     fun provideMaterialsRepository(mainRepository: MainRepository): MaterialsRepository =
         MaterialsRepositoryImpl(mainRepository)
 
+    @Provides
+    @Singleton
+    fun provideYandexAdRepository(userStorage: UserStorage): YandexAdRepository =
+        YandexAdRepositoryImpl(userStorage)
 }

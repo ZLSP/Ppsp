@@ -5,5 +5,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface PoliceActRepository {
     suspend fun getPoliceAct(): Flow<PoliceActResponse?>
-    fun checkIsShowAd(): Boolean
 }
