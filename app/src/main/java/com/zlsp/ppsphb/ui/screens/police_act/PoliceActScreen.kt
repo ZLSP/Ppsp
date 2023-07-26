@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
+import com.zlsp.ppsphb.data.repository.police_act.models.PartArticleResponse
 import com.zlsp.ppsphb.ui.general.DefaultScreenWrapper
 import com.zlsp.ppsphb.ui.general.ViewCardCustomElevation
+import com.zlsp.ppsphb.ui.general.ViewPointItem
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.Theme
 
@@ -46,7 +47,7 @@ fun PoliceActScreen(
         Row {
             ListParts(state.activeArticle)
             ListArticlesNumber(
-                activeArticle = state.activeArticle.id,
+                activeArticleId = state.activeArticle.id,
                 isVisible = isVisibleUiBars,
                 listArticle = state.listArticles,
                 onClickItem = { sendEvent(PoliceActScreenEvent.OnClickArticle(it)) }
@@ -57,7 +58,7 @@ fun PoliceActScreen(
 
 @Composable
 private fun ListArticlesNumber(
-    activeArticle: Double,
+    activeArticleId: Double,
     isVisible: Boolean,
     listArticle: List<ActArticleResponse>,
     onClickItem: (ActArticleResponse) -> Unit
@@ -81,28 +82,42 @@ private fun ListArticlesNumber(
             items(
                 items = listArticle,
                 key = { it.id },
-            ) {
-                val background = if (it.id == activeArticle) {
-                    Theme.colors.secondary
-                } else {
-                    Theme.colors.background
+                itemContent = {
+                    ArticleNumItem(
+                        actArticleResponse = it,
+                        isActive = it.id == activeArticleId,
+                        onClickItem = { onClickItem(it) }
+                    )
                 }
-                Spacer(Modifier.height(10.dp))
-                ViewCardCustomElevation(
-                    modifier = Modifier.clickable { onClickItem(it) },
-                    backgroundColor = background,
-                    shape = RoundedCornerShape(6.dp)
-                ) {
-                    Box(Modifier.size(50.dp)) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = it.numArticle,
-                            style = Theme.typography.numArticle
-                        )
-                    }
-                }
-            }
+            )
             item { Spacer(Modifier.height(10.dp)) }
+        }
+    }
+}
+
+@Composable
+private fun ArticleNumItem(
+    actArticleResponse: ActArticleResponse,
+    isActive: Boolean,
+    onClickItem: () -> Unit
+) {
+    val background = if (isActive) {
+        Theme.colors.secondary
+    } else {
+        Theme.colors.background
+    }
+    Spacer(Modifier.height(10.dp))
+    ViewCardCustomElevation(
+        modifier = Modifier.clickable { onClickItem() },
+        backgroundColor = background,
+        shape = RoundedCornerShape(6.dp)
+    ) {
+        Box(Modifier.size(50.dp)) {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = actArticleResponse.numArticle,
+                style = Theme.typography.numArticle
+            )
         }
     }
 }
@@ -116,52 +131,44 @@ private fun RowScope.ListParts(article: ActArticleResponse) {
         contentPadding = PaddingValues(horizontal = 10.dp)
     ) {
         item {
-            Spacer(Modifier.height(20.dp))
-            Text(
-                text = article.titleArticle,
-                style = Theme.typography.titleArticle
-            )
-            Spacer(Modifier.height(10.dp))
+            ListTitle(article.titleArticle)
         }
         items(
-            items = article.listParts
+            items = article.listParts,
+            itemContent = { PartItem(it) }
+        )
+        item { Spacer(Modifier.height(20.dp)) }
+    }
+}
+
+@Composable
+private fun ListTitle(titleArticle: String) {
+    Spacer(Modifier.height(20.dp))
+    Text(
+        text = titleArticle,
+        style = Theme.typography.titleArticle
+    )
+    Spacer(Modifier.height(10.dp))
+}
+
+@Composable
+private fun PartItem(part: PartArticleResponse) {
+    Spacer(Modifier.height(10.dp))
+    ViewCardCustomElevation() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
-            Spacer(Modifier.height(10.dp))
-            ViewCardCustomElevation() {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
-                ) {
-                    Text(
-                        text = it.partText,
-                        style = Theme.typography.titlePart
-                    )
-                    it.points?.forEach { point ->
-                        Spacer(Modifier.height(5.dp))
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            backgroundColor = Theme.colors.onBackground.copy(0.1f),
-                            shape = RoundedCornerShape(12.dp),
-                            elevation = 0.dp,
-                            contentColor = Theme.colors.onBackground
-                        ) {
-                            Box(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp)
-                            ) {
-                                Text(
-                                    text = point,
-                                    style = Theme.typography.textBody
-                                )
-                            }
-                        }
-                    }
-                }
+            Text(
+                text = part.partText,
+                style = Theme.typography.titlePart
+            )
+            part.points?.forEach { point ->
+                ViewPointItem(point)
+                Spacer(Modifier.height(5.dp))
             }
         }
-        item { Spacer(Modifier.height(20.dp)) }
     }
 }
 
