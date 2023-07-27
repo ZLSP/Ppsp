@@ -14,8 +14,8 @@ android {
         applicationId "com.zlsp.android.ppsphb"
         minSdk 26
         targetSdk 33
-        versionCode 4
-        versionName "1.4"
+        versionCode 6
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -86,7 +86,6 @@ dependencies {
     //Yandex
     implementation 'com.yandex.android:mobileads:5.10.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.yandex.android:mobmetricalib:5.3.0'
 
     //OrbitMVI
     implementation "org.orbit-mvi:orbit-core:$orbitVersion"
