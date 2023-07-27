@@ -65,6 +65,7 @@ import androidx.navigation.compose.rememberNavController
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.zlsp.ppsphb.R
 import com.zlsp.ppsphb.base.baseComposable
+import com.zlsp.ppsphb.data.utils.FBAnalyticsUtils
 import com.zlsp.ppsphb.data.utils.FileDownload
 import com.zlsp.ppsphb.data.utils.YandexAdsUtils
 import com.zlsp.ppsphb.domain.Screen
@@ -101,7 +102,10 @@ fun MainContent(
                 isVisible = isVisibleUiBars,
                 onClickThemeMode = onClickThemeMode,
                 onClickTypoSize = onClickTypoSize,
-                onClickFullScreen = { isVisibleUiBars = false }
+                onClickFullScreen = {
+                    FBAnalyticsUtils.logEvent(FBAnalyticsUtils.LOG_ON_CLICK_FULL_SCREEN)
+                    isVisibleUiBars = false
+                }
             )
         },
         bottomBar = {

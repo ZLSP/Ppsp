@@ -80,6 +80,7 @@ object YandexAdsUtils {
         interstitialAd.setAdUnitId(YANDEX_INTERSTITIAL_ID)
         interstitialAd.setInterstitialAdEventListener(object : InterstitialAdEventListener {
             override fun onAdLoaded() {
+                FBAnalyticsUtils.logEvent(FBAnalyticsUtils.LOG_SHOW_AD_INTERSTITIAL)
                 Timber.tag(YANDEX_INTERSTITIAL_TAG).d("onAdLoaded")
                 interstitialAd.show()
             }
@@ -125,6 +126,7 @@ object YandexAdsUtils {
         rewardedAd.setAdUnitId(YANDEX_REWARDED_ID)
         rewardedAd.setRewardedAdEventListener(object : RewardedAdEventListener {
             override fun onAdLoaded() {
+                FBAnalyticsUtils.logEvent(FBAnalyticsUtils.LOG_SHOW_AD_REWARDED)
                 rewardedAd.show()
                 Timber.tag(YANDEX_REWARDED_TAG).d("onAdLoaded")
             }

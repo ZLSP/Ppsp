@@ -5,6 +5,7 @@ import com.zlsp.ppsphb.base.BaseViewModel
 import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.materials.MaterialsRepository
 import com.zlsp.ppsphb.data.repository.materials.model.MaterialResponse
+import com.zlsp.ppsphb.data.utils.FBAnalyticsUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,6 +37,7 @@ class MaterialsViewModel @Inject constructor(private val materialsRepository: Ma
     }
 
     private fun showAd(material: MaterialResponse) = intent {
+        FBAnalyticsUtils.logEvent(FBAnalyticsUtils.LOG_ON_CLICK_DOWNLOAD)
         reduce { state.copy(contentState = ContentState.Loading) }
         postSideEffect(MaterialsScreenEffect.ShowRewardedAd(material))
     }
