@@ -6,7 +6,6 @@ import com.zlsp.ppsphb.data.utils.AssetJsonReader
 import com.zlsp.ppsphb.data.utils.CacheManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
@@ -21,11 +20,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override fun getAppData(): Flow<GetAppDataResponse> {
         val cache = cacheManager.get()
-        return flow { cache ?: emit(dataSource.getAppData()) }
+        return flow { cache ?: emit(assetJsonReader.getLocalAppData()) }
             .onEach { appData ->
                 cache?.let { cacheManager.put(appData) }
-            }.catch {
-                emit(assetJsonReader.getLocalAppData())
             }.flowOn(Dispatchers.IO)
 
     }
