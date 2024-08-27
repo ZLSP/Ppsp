@@ -3,7 +3,7 @@ buildscript {
         compose_ui_version = '1.6.8'
         nav_version = '2.7.7'
         room_version = '2.6.1'
-        hilt_version = '2.48'
+        hilt_version = '2.52'
         orbit_version = '4.5.0'
         ktor_version = '2.3.0'
         yandex_version = '7.4.0'
@@ -14,6 +14,6 @@ plugins {
     id 'com.android.application' version '8.5.2' apply false
     id 'com.android.library' version '8.5.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.9.25' apply false
-    id 'com.google.dagger.hilt.android' version '2.44' apply false
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    id 'com.google.dagger.hilt.android' version '2.52' apply false
+    id 'com.google.gms.google-services' version '4.4.2' apply false
 }
