@@ -12,8 +12,8 @@ android {
 
     defaultConfig {
         applicationId "com.zlsp.android.ppsphb"
-        minSdk 26
-        targetSdk 33
+        minSdk 24
+        targetSdk 35
         versionCode 7
         versionName "1.7"
 
