@@ -1,5 +1,6 @@
 package com.zlsp.ppsphb.main
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
@@ -136,11 +137,13 @@ fun MainContent(
                 ) { viewModel ->
                     val state = viewModel.collectAsState().value
                     val sendEvent = viewModel::sendEvent
-                    val context = LocalContext.current
+                    val activity = LocalContext.current as? Activity
                     PoliceActScreen(state, isVisibleUiBars, sendEvent)
                     viewModel.collectSideEffect { effect ->
                         when (effect) {
-                            PoliceActScreenEffect.ShowAd -> YandexAdsUtils.showInterstitial(context)
+                            PoliceActScreenEffect.ShowAd -> activity?.let {
+                                YandexAdsUtils.showInterstitial(it)
+                            }
                         }
                     }
                 }
@@ -151,11 +154,13 @@ fun MainContent(
                 ) { viewModel ->
                     val state = viewModel.collectAsState().value
                     val sendEvent = viewModel::sendEvent
-                    val context = LocalContext.current
+                    val activity = LocalContext.current as? Activity
                     GroundsScreen(state, sendEvent)
                     viewModel.collectSideEffect { effect ->
                         when (effect) {
-                            GroundsScreenEffect.ShowAd -> YandexAdsUtils.showInterstitial(context)
+                            GroundsScreenEffect.ShowAd -> activity?.let {
+                                YandexAdsUtils.showInterstitial(it)
+                            }
                         }
                     }
                 }
@@ -170,11 +175,13 @@ fun MainContent(
                 ) { viewModel ->
                     val state = viewModel.collectAsState().value
                     val sendEvent = viewModel::sendEvent
-                    val context = LocalContext.current
+                    val activity = LocalContext.current as? Activity
                     AuthorityScreen(state, sendEvent)
                     viewModel.collectSideEffect { effect ->
                         when (effect) {
-                            AuthorityScreenEffect.ShowAd -> YandexAdsUtils.showInterstitial(context)
+                            AuthorityScreenEffect.ShowAd -> activity?.let {
+                                YandexAdsUtils.showInterstitial(it)
+                            }
                         }
                     }
                 }
@@ -185,21 +192,23 @@ fun MainContent(
                 ) { viewModel ->
                     val state = viewModel.collectAsState().value
                     val sendEvent = viewModel::sendEvent
-                    val context = LocalContext.current
+                    val activity = LocalContext.current as? Activity
                     MaterialsScreen(state, sendEvent)
                     viewModel.collectSideEffect { effect ->
                         when (effect) {
-                            is MaterialsScreenEffect.ShowRewardedAd -> YandexAdsUtils.showRewarded(
-                                ctx = context,
-                                onSuccessAction = {
-                                    FileDownload.download(
-                                        url = effect.material.link,
-                                        fileName = effect.material.title + ".docx",
-                                        context = context
-                                    )
-                                },
-                                showContent = { sendEvent(MaterialsScreenEvent.ShowContent) }
-                            )
+                            is MaterialsScreenEffect.ShowRewardedAd -> activity?.let {
+                                YandexAdsUtils.showRewarded(
+                                    activity = it,
+                                    onSuccessAction = {
+                                        FileDownload.download(
+                                            url = effect.material.link,
+                                            fileName = effect.material.title + ".docx",
+                                            context = it
+                                        )
+                                    },
+                                    showContent = { sendEvent(MaterialsScreenEvent.ShowContent) }
+                                )
+                            }
                         }
                     }
                 }

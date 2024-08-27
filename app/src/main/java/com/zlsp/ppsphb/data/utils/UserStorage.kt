@@ -35,7 +35,7 @@ class UserStorage @Inject constructor(private val pref: SharedPreferences) {
 
     fun checkIsShowAd(): Boolean {
         val numAd: Int = pref.getInt(KEY_FULL_AD, 1)
-        val isShowAd = numAd > 4
+        val isShowAd = numAd > 8
         Timber.tag("Yandex").d("Number: $numAd; isShowAd: $isShowAd")
         return if (isShowAd) {
             updateAdState(1)

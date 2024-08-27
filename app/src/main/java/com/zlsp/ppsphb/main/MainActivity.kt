@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zlsp.ppsphb.data.utils.FBAnalyticsUtils
+import com.zlsp.ppsphb.data.utils.YandexAdsUtils
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.LocalThemeMode
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +16,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         FBAnalyticsUtils.initFB()
         super.onCreate(savedInstanceState)
+        YandexAdsUtils.loadFullScreenAd(this)
         setContent {
             val viewModel = hiltViewModel<MainViewModel>()
             val state = viewModel.collectAsState().value
