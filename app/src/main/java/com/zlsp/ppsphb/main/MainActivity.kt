@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zlsp.ppsphb.data.utils.FBAnalyticsUtils
+import com.zlsp.ppsphb.data.utils.InAppUpdateUtils
 import com.zlsp.ppsphb.data.utils.YandexAdsUtils
 import com.zlsp.ppsphb.ui.theme.AppTheme
 import com.zlsp.ppsphb.ui.theme.LocalThemeMode
@@ -16,6 +17,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         FBAnalyticsUtils.initFB()
         super.onCreate(savedInstanceState)
+        InAppUpdateUtils.initAppUpdateManager(this)
+        InAppUpdateUtils.checkForAppUpdates()
         YandexAdsUtils.loadFullScreenAd(this)
         setContent {
             val viewModel = hiltViewModel<MainViewModel>()
@@ -38,5 +41,15 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        InAppUpdateUtils.addUpdateSuccessListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        InAppUpdateUtils.unregisterUpdateListener()
     }
 }

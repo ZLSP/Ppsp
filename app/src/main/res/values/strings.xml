@@ -5,4 +5,9 @@
     <string name="grounds_screen_name">Основания</string>
     <string name="authority_screen_name">Полномочия по АП</string>
     <string name="gun_screen_name">ТТХ ПМ</string>
+
+    <string name="in_app_update_alert_title">Обновление загружено</string>
+    <string name="in_app_update_alert_button_positive">Установить</string>
+    <string name="in_app_update_alert_button_negative">Позже</string>
+    <string name="in_app_update_toast_error">Загрузка обновления не удалась</string>
 </resources>
