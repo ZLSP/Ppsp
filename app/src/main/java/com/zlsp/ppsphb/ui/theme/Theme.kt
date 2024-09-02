@@ -36,7 +36,7 @@ fun AppTheme(
     val typography = AppTypography.getTypography(
         size = typoSizeState.value,
         paletteColor = paletteColor
-    )
+    ).switch()
     val systemBarsColor = paletteColor.background
     SideEffect {
         systemUiController.setSystemBarsColor(
