@@ -6,7 +6,7 @@ buildscript {
         hilt_version = '2.52'
         orbit_version = '4.5.0'
         ktor_version = '2.3.0'
-        yandex_version = '7.4.0'
+        yandex_version = '7.10.0'
         tracer_version = '0.2.7'
     }
 }
