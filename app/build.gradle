@@ -4,6 +4,25 @@ plugins {
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id  'ru.ok.tracer' version  '0.2.7'
+}
+
+tracer {
+    defaultConfig {
+        // См. в разделе "Настройки"
+        pluginToken = "tWqwzCDdVmyM4oisnRP52GP03y8zwXyTtWJkAhmco62"
+        appToken = "wQDSpxz3MvbWy5oOkFbbwLmZDwm5rYYnartaTkQNU3e"
+        // Включает загрузку маппингов для билда. По умолчанию включена
+        uploadMapping =  true
+    }
+    // Также можно задавать конфигурацию для каждого flavor, buildType, buildVariant.
+    // Конфигурации наследуют defaultConfig.
+    debug {
+        // Параметры...
+    }
+    demoDebug {
+        // Параметры...
+    }
 }
 
 android {
@@ -116,4 +135,12 @@ dependencies {
     //
     implementation "com.google.android.play:app-update:2.1.0"
     implementation "com.google.android.play:app-update-ktx:2.1.0"
+
+    //tracer
+    implementation "ru.ok.tracer:tracer-crash-report:$tracer_version"
+    implementation "ru.ok.tracer:tracer-crash-report-native:$tracer_version"
+    implementation "ru.ok.tracer:tracer-heap-dumps:$tracer_version"
+    implementation "ru.ok.tracer:tracer-disk-usage:$tracer_version"
+    implementation "ru.ok.tracer:tracer-profiler-sampling:$tracer_version"
+    implementation "ru.ok.tracer:tracer-profiler-systrace:$tracer_version"
 }
