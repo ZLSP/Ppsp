@@ -6,6 +6,7 @@ import com.zlsp.ppsphb.base.ContentState
 import com.zlsp.ppsphb.data.repository.authority.AuthorityRepository
 import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
@@ -49,6 +50,12 @@ class AuthorityViewModel @Inject constructor(
                         contentState = ContentState.Content,
                         titleContent = it.title,
                         authorityList = it.listAuthority
+                    )
+                }
+            }.catch {
+                reduce {
+                    state.copy(
+                        contentState = ContentState.Error(it.message?: "Что-то пошло не так!")
                     )
                 }
             }.launchIn(viewModelScope)

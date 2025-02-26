@@ -7,6 +7,7 @@ import com.zlsp.ppsphb.data.repository.police_act.PoliceActRepository
 import com.zlsp.ppsphb.data.repository.police_act.models.ActArticleResponse
 import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
@@ -52,6 +53,12 @@ class PoliceActViewModel @Inject constructor(
                     )
                 }
                 reduce { newState }
+            }.catch {
+                reduce {
+                    state.copy(
+                        contentState = ContentState.Error(it.message?: "Что-то пошло не так!")
+                    )
+                }
             }
             .launchIn(viewModelScope)
     }

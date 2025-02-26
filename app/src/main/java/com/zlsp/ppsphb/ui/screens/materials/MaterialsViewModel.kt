@@ -7,6 +7,7 @@ import com.zlsp.ppsphb.data.repository.materials.MaterialsRepository
 import com.zlsp.ppsphb.data.repository.materials.model.MaterialResponse
 import com.zlsp.ppsphb.data.utils.FBAnalyticsUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
@@ -47,7 +48,12 @@ class MaterialsViewModel @Inject constructor(private val materialsRepository: Ma
         materialsRepository.getMaterials()
             .onEach {
                 reduce { state.copy(contentState = ContentState.Content, listMaterials = it) }
-            }
-            .launchIn(viewModelScope)
+            }.catch {
+                reduce {
+                    state.copy(
+                        contentState = ContentState.Error(it.message?: "Что-то пошло не так!")
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 }

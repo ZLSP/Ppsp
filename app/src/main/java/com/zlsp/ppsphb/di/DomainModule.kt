@@ -17,7 +17,6 @@ import com.zlsp.ppsphb.data.repository.theme.ThemeRepository
 import com.zlsp.ppsphb.data.repository.theme.ThemeRepositoryImpl
 import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepository
 import com.zlsp.ppsphb.data.repository.yandex.YandexAdRepositoryImpl
-import com.zlsp.ppsphb.data.utils.AssetJsonReader
 import com.zlsp.ppsphb.data.utils.UserStorage
 import dagger.Module
 import dagger.Provides
@@ -51,15 +50,11 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideAssetJsonManager(@ApplicationContext context: Context) = AssetJsonReader(context)
-
-    @Provides
-    @Singleton
     fun provideMainRepository(
         dataSource: KtorDataSource,
-        assetJsonReader: AssetJsonReader
+        prefs: SharedPreferences
     ): MainRepository =
-        MainRepositoryImpl(dataSource, assetJsonReader)
+        MainRepositoryImpl(dataSource, prefs)
 
     @Provides
     @Singleton
