@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -96,6 +97,7 @@ fun MainContent(
 ) {
     var isVisibleUiBars by remember { mutableStateOf(true) }
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         backgroundColor = Theme.colors.background,
         topBar = {
             TopBar(
